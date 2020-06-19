@@ -8,6 +8,7 @@ import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm'
 import FaceRecognition from './components/FaceRecognition/FaceRecognition'
 import SignIn from './components/SignIn/SignIn'
 import Register from './components/Register/Register'
+import FaceRecognitionResults from './components/FaceRecognitionResults/FaceRecognitionResults'
 
 // particles background 
 const particlesOptions = {
@@ -36,6 +37,7 @@ const initialState = {
   input: '',
   imageUrl: '',
   boxes: [],
+  imagesDatas: [],
   route: 'signin',
   isSignedIn: false,
   user: {
@@ -61,7 +63,6 @@ class App extends React.Component {
 
   onInputChange = (event) => {
     this.setState({input: event.target.value})
-    console.log(this.state.input)
   }
 
   loadUser = (user) => {
@@ -103,6 +104,7 @@ class App extends React.Component {
           })
       .then(response => response.json())
       .then((response)  => {
+        this.setState({imagesDatas: response.outputs[0].data.regions})
         if(response) {
           fetch('https://stormy-fortress-98961.herokuapp.com/image', {
             method: 'put',
@@ -138,6 +140,7 @@ class App extends React.Component {
            <Rank name={this.state.user.name} entries={this.state.user.entries} />
            <ImageLinkForm  onInputChange={this.onInputChange} onSubmit={this.onSubmit}/>
            <FaceRecognition boxes={this.state.boxes} imageUrl={this.state.imageUrl}/>
+           {this.state.imagesDatas != '' ? <FaceRecognitionResults imagesData={this.state.imagesDatas}/> : null}
           </div>
         )
       case 'signin':

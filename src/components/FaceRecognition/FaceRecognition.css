@@ -4,5 +4,11 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    cursor: pointer
+    cursor: pointer;
+}
+
+.imagesNumber {
+    font-size: 18px;
+    color: red;
+    font-weight: bold
 }
